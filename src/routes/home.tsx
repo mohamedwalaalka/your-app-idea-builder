@@ -290,14 +290,17 @@ function TransactionRow({ tx }: { tx: Transaction }) {
 
 function FloatingAddButton() {
   return (
-    <button
-      type="button"
-      aria-label="Add transaction"
-      className="fixed bottom-24 left-1/2 z-30 flex h-14 w-14 -translate-x-[calc(-50%+9rem)] items-center justify-center rounded-2xl text-primary-foreground shadow-elegant gradient-primary transition active:scale-95"
-      style={{ transform: "translateX(calc(11rem))" }}
-    >
-      <Plus className="h-6 w-6" strokeWidth={2.5} />
-    </button>
+    <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 flex justify-center px-4">
+      <div className="pointer-events-none w-full max-w-md">
+        <button
+          type="button"
+          aria-label="Add transaction"
+          className="pointer-events-auto float-right flex h-14 w-14 items-center justify-center rounded-2xl text-primary-foreground shadow-elegant gradient-primary transition active:scale-95"
+        >
+          <Plus className="h-6 w-6" strokeWidth={2.5} />
+        </button>
+      </div>
+    </div>
   );
 }
 
