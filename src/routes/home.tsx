@@ -1,16 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BarChart3,
   Bell,
-  Home as HomeIcon,
-  Plus,
-  Receipt,
-  Settings as SettingsIcon,
   Smartphone,
 } from "lucide-react";
 import { MobileShell } from "@/components/mobile-shell";
+import { BottomNav } from "@/components/bottom-nav";
+
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -173,25 +170,8 @@ function Home() {
         </ul>
       </section>
 
-      {/* Bottom nav */}
-      <nav
-        aria-label="Primary"
-        className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md items-center justify-around border-t border-border/70 bg-background/85 px-4 pb-4 pt-2 backdrop-blur-xl"
-      >
-        <NavItem icon={<HomeIcon className="h-5 w-5" />} label="Home" active />
-        <NavItem icon={<Receipt className="h-5 w-5" />} label="Transactions" />
-        <div className="relative w-14">
-          <Link
-            to="/home"
-            aria-label="Add transaction"
-            className="absolute -top-8 left-1/2 grid h-14 w-14 -translate-x-1/2 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-elegant transition-transform active:scale-95"
-          >
-            <Plus className="h-6 w-6" />
-          </Link>
-        </div>
-        <NavItem icon={<BarChart3 className="h-5 w-5" />} label="Analytics" />
-        <NavItem icon={<SettingsIcon className="h-5 w-5" />} label="Settings" />
-      </nav>
+      <BottomNav />
+
     </MobileShell>
   );
 }
@@ -267,35 +247,5 @@ function TransactionRow({ txn }: { txn: Txn }) {
         </p>
       </div>
     </li>
-  );
-}
-
-function NavItem({
-  icon,
-  label,
-  active = false,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      className={
-        "flex flex-1 flex-col items-center gap-1 py-1 text-[10px] font-semibold " +
-        (active ? "text-primary" : "text-muted-foreground")
-      }
-    >
-      <span
-        className={
-          "grid h-9 w-9 place-items-center rounded-xl transition-colors " +
-          (active ? "bg-[color-mix(in_oklab,var(--primary)_14%,transparent)]" : "")
-        }
-      >
-        {icon}
-      </span>
-      {label}
-    </button>
   );
 }
