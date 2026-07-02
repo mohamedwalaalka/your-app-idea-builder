@@ -1,16 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BarChart3,
   Bell,
-  Home as HomeIcon,
-  Plus,
-  Receipt,
-  Settings as SettingsIcon,
   Smartphone,
 } from "lucide-react";
 import { MobileShell } from "@/components/mobile-shell";
+import { BottomNav } from "@/components/bottom-nav";
+
 
 export const Route = createFileRoute("/home")({
   head: () => ({
