@@ -170,25 +170,8 @@ function Home() {
         </ul>
       </section>
 
-      {/* Bottom nav */}
-      <nav
-        aria-label="Primary"
-        className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md items-center justify-around border-t border-border/70 bg-background/85 px-4 pb-4 pt-2 backdrop-blur-xl"
-      >
-        <NavItem icon={<HomeIcon className="h-5 w-5" />} label="Home" active />
-        <NavItem icon={<Receipt className="h-5 w-5" />} label="Transactions" />
-        <div className="relative w-14">
-          <Link
-            to="/home"
-            aria-label="Add transaction"
-            className="absolute -top-8 left-1/2 grid h-14 w-14 -translate-x-1/2 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-elegant transition-transform active:scale-95"
-          >
-            <Plus className="h-6 w-6" />
-          </Link>
-        </div>
-        <NavItem icon={<BarChart3 className="h-5 w-5" />} label="Analytics" />
-        <NavItem icon={<SettingsIcon className="h-5 w-5" />} label="Settings" />
-      </nav>
+      <BottomNav />
+
     </MobileShell>
   );
 }
