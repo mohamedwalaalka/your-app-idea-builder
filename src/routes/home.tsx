@@ -249,33 +249,3 @@ function TransactionRow({ txn }: { txn: Txn }) {
     </li>
   );
 }
-
-function NavItem({
-  icon,
-  label,
-  active = false,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      className={
-        "flex flex-1 flex-col items-center gap-1 py-1 text-[10px] font-semibold " +
-        (active ? "text-primary" : "text-muted-foreground")
-      }
-    >
-      <span
-        className={
-          "grid h-9 w-9 place-items-center rounded-xl transition-colors " +
-          (active ? "bg-[color-mix(in_oklab,var(--primary)_14%,transparent)]" : "")
-        }
-      >
-        {icon}
-      </span>
-      {label}
-    </button>
-  );
-}
