@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,25 @@ export const Route = createFileRoute("/signup")({
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleMockAuth = () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      localStorage.setItem(
+        "raad.mockUser",
+        JSON.stringify({ name: "Amina", email: "amina@raad.app", createdAt: Date.now() }),
+      );
+    } catch {
+      /* storage may be unavailable */
+    }
+    // Small delay for Material 3 emphasized easing feel
+    window.setTimeout(() => {
+      navigate({ to: "/home" });
+    }, 320);
+  };
 
   return (
     <MobileShell withHero className="pb-10 pt-6">
@@ -47,6 +66,7 @@ function Signup() {
         className="mt-8 space-y-5"
         onSubmit={(e) => {
           e.preventDefault();
+          handleMockAuth();
         }}
       >
         <Field
@@ -93,9 +113,10 @@ function Signup() {
         <Button
           type="submit"
           size="lg"
-          className="h-14 w-full rounded-2xl gradient-primary text-base font-semibold text-primary-foreground shadow-elegant hover:opacity-95"
+          disabled={loading}
+          className="h-14 w-full rounded-2xl gradient-primary text-base font-semibold text-primary-foreground shadow-elegant transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:opacity-95 active:scale-[0.98] disabled:opacity-80"
         >
-          Create account
+          {loading ? "Creating account…" : "Create account"}
         </Button>
       </form>
 
@@ -109,6 +130,7 @@ function Signup() {
 
       <button
         type="button"
+        onClick={handleMockAuth}
         className="glass-card flex w-full items-center justify-center gap-3 rounded-2xl py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
       >
         <GoogleIcon />

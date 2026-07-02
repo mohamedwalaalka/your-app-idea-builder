@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,19 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const handleMockAuth = () => {
+    try {
+      localStorage.setItem(
+        "raad.mockUser",
+        JSON.stringify({ name: "Amina", email: "amina@raad.app", createdAt: Date.now() }),
+      );
+    } catch {
+      /* ignore */
+    }
+    window.setTimeout(() => navigate({ to: "/home" }), 260);
+  };
 
   return (
     <MobileShell withHero className="pb-10 pt-6">
@@ -44,6 +57,7 @@ function Login() {
         className="mt-8 space-y-5"
         onSubmit={(e) => {
           e.preventDefault();
+          handleMockAuth();
         }}
       >
         <Field
