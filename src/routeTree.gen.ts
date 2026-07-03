@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TransactionsRouteImport } from './routes/transactions'
+import { Route as TransactionsIdRouteImport } from './routes/transactions.$id'
 import { Route as SmsPermissionRouteImport } from './routes/sms-permission'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
@@ -18,11 +19,15 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TransactionsIdRouteImport } from './routes/transactions.$id'
 
 const TransactionsRoute = TransactionsRouteImport.update({
   id: '/transactions',
   path: '/transactions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransactionsIdRoute = TransactionsIdRouteImport.update({
+  id: '/transactions/$id',
+  path: '/transactions/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SmsPermissionRoute = SmsPermissionRouteImport.update({
@@ -65,11 +70,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TransactionsIdRoute = TransactionsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => TransactionsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,7 +80,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sms-permission': typeof SmsPermissionRoute
-  '/transactions': typeof TransactionsRouteWithChildren
+  '/transactions': typeof TransactionsRoute
   '/transactions/$id': typeof TransactionsIdRoute
 }
 export interface FileRoutesByTo {
@@ -92,7 +92,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sms-permission': typeof SmsPermissionRoute
-  '/transactions': typeof TransactionsRouteWithChildren
+  '/transactions': typeof TransactionsRoute
   '/transactions/$id': typeof TransactionsIdRoute
 }
 export interface FileRoutesById {
@@ -105,7 +105,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/sms-permission': typeof SmsPermissionRoute
-  '/transactions': typeof TransactionsRouteWithChildren
+  '/transactions': typeof TransactionsRoute
   '/transactions/$id': typeof TransactionsIdRoute
 }
 export interface FileRouteTypes {
@@ -156,11 +156,19 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   SmsPermissionRoute: typeof SmsPermissionRoute
-  TransactionsRoute: typeof TransactionsRouteWithChildren
+  TransactionsRoute: typeof TransactionsRoute
+  TransactionsIdRoute: typeof TransactionsIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/transactions/$id': {
+      id: '/transactions/$id'
+      path: '/transactions/$id'
+      fullPath: '/transactions/$id'
+      preLoaderRoute: typeof TransactionsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/transactions': {
       id: '/transactions'
       path: '/transactions'
@@ -224,27 +232,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/transactions/$id': {
-      id: '/transactions/$id'
-      path: '/$id'
-      fullPath: '/transactions/$id'
-      preLoaderRoute: typeof TransactionsIdRouteImport
-      parentRoute: typeof TransactionsRoute
-    }
   }
 }
-
-interface TransactionsRouteChildren {
-  TransactionsIdRoute: typeof TransactionsIdRoute
-}
-
-const TransactionsRouteChildren: TransactionsRouteChildren = {
-  TransactionsIdRoute: TransactionsIdRoute,
-}
-
-const TransactionsRouteWithChildren = TransactionsRoute._addFileChildren(
-  TransactionsRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -255,8 +244,19 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   SmsPermissionRoute: SmsPermissionRoute,
-  TransactionsRoute: TransactionsRouteWithChildren,
+  TransactionsRoute: TransactionsRoute,
+  TransactionsIdRoute: TransactionsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
