@@ -124,36 +124,42 @@ function TransactionsPage() {
 function TransactionRow({ txn }: { txn: Txn }) {
   const isIncome = txn.kind === "income";
   return (
-    <li className="glass-card flex items-center gap-3 rounded-2xl p-3.5 shadow-card-soft">
-      <div className="grid h-11 w-11 place-items-center rounded-2xl bg-accent text-accent-foreground">
-        <Smartphone className="h-5 w-5" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-foreground">{txn.title}</p>
-        <p className="text-[11px] text-muted-foreground">
-          {txn.provider} · {txn.time}
-        </p>
-      </div>
-      <div className="flex items-center gap-1.5">
-        <span
-          className={
-            "grid h-7 w-7 place-items-center rounded-full " +
-            (isIncome
-              ? "bg-[color-mix(in_oklab,var(--income)_15%,transparent)] text-[var(--income)]"
-              : "bg-[color-mix(in_oklab,var(--expense)_15%,transparent)] text-[var(--expense)]")
-          }
-        >
-          {isIncome ? <ArrowUpRight className="h-3.5 w-3.5" /> : <ArrowDownRight className="h-3.5 w-3.5" />}
-        </span>
-        <p
-          className={
-            "text-sm font-bold " +
-            (isIncome ? "text-[var(--income)]" : "text-[var(--expense)]")
-          }
-        >
-          {isIncome ? "+" : "-"}${currency(txn.amount)}
-        </p>
-      </div>
+    <li>
+      <Link
+        to="/transactions/$id"
+        params={{ id: txn.id }}
+        className="glass-card flex items-center gap-3 rounded-2xl p-3.5 shadow-card-soft transition-transform active:scale-[0.99]"
+      >
+        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-accent text-accent-foreground">
+          <Smartphone className="h-5 w-5" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-foreground">{txn.title}</p>
+          <p className="text-[11px] text-muted-foreground">
+            {txn.provider} · {txn.time}
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className={
+              "grid h-7 w-7 place-items-center rounded-full " +
+              (isIncome
+                ? "bg-[color-mix(in_oklab,var(--income)_15%,transparent)] text-[var(--income)]"
+                : "bg-[color-mix(in_oklab,var(--expense)_15%,transparent)] text-[var(--expense)]")
+            }
+          >
+            {isIncome ? <ArrowUpRight className="h-3.5 w-3.5" /> : <ArrowDownRight className="h-3.5 w-3.5" />}
+          </span>
+          <p
+            className={
+              "text-sm font-bold " +
+              (isIncome ? "text-[var(--income)]" : "text-[var(--expense)]")
+            }
+          >
+            {isIncome ? "+" : "-"}${currency(txn.amount)}
+          </p>
+        </div>
+      </Link>
     </li>
   );
 }
