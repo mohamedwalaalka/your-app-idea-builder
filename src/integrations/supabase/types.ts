@@ -14,7 +14,125 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          currency: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          currency?: string
+          display_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          currency?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sms_messages: {
+        Row: {
+          body: string
+          body_hash: string
+          id: string
+          received_at: string
+          recognized: boolean
+          sender: string | null
+          transaction_id: string | null
+          user_id: string
+        }
+        Insert: {
+          body: string
+          body_hash: string
+          id?: string
+          received_at?: string
+          recognized?: boolean
+          sender?: string | null
+          transaction_id?: string | null
+          user_id: string
+        }
+        Update: {
+          body?: string
+          body_hash?: string
+          id?: string
+          received_at?: string
+          recognized?: boolean
+          sender?: string | null
+          transaction_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_messages_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          category: Database["public"]["Enums"]["txn_category"]
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["txn_kind"]
+          note: string | null
+          occurred_at: string
+          provider: Database["public"]["Enums"]["txn_provider"]
+          reference: string | null
+          sms_hash: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category?: Database["public"]["Enums"]["txn_category"]
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["txn_kind"]
+          note?: string | null
+          occurred_at?: string
+          provider?: Database["public"]["Enums"]["txn_provider"]
+          reference?: string | null
+          sms_hash?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: Database["public"]["Enums"]["txn_category"]
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["txn_kind"]
+          note?: string | null
+          occurred_at?: string
+          provider?: Database["public"]["Enums"]["txn_provider"]
+          reference?: string | null
+          sms_hash?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +141,20 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      txn_category:
+        | "Food"
+        | "Transport"
+        | "Shopping"
+        | "Bills"
+        | "Salary"
+        | "Transfer"
+        | "Business"
+        | "Education"
+        | "Health"
+        | "Airtime"
+        | "Other"
+      txn_kind: "income" | "expense"
+      txn_provider: "EVC" | "Zaad" | "Sahal" | "Other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +281,22 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      txn_category: [
+        "Food",
+        "Transport",
+        "Shopping",
+        "Bills",
+        "Salary",
+        "Transfer",
+        "Business",
+        "Education",
+        "Health",
+        "Airtime",
+        "Other",
+      ],
+      txn_kind: ["income", "expense"],
+      txn_provider: ["EVC", "Zaad", "Sahal", "Other"],
+    },
   },
 } as const
