@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,8 @@ import { RaadLogo } from "@/components/raad-logo";
 import { MobileShell } from "@/components/mobile-shell";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { friendlyAuthError, validateEmail } from "@/lib/password";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -24,33 +26,48 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { session, ready } = useAuth();
+
+  // Already signed in? Go straight home.
+  useEffect(() => {
+    if (ready && session) navigate({ to: "/home", replace: true });
+  }, [ready, session, navigate]);
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
+    const emailCheck = validateEmail(email);
+    if (!emailCheck.ok) return toast.error(emailCheck.message!);
+    if (!password) return toast.error("Enter your password.");
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyAuthError(error.message)); return; }
     toast.success("Welcome back");
-    navigate({ to: "/home" });
+    navigate({ to: "/home", replace: true });
   };
 
   const signInWithGoogle = async () => {
-    const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (res.error) { toast.error(res.error.message || "Google sign-in failed"); return; }
-    if (res.redirected) return;
-    navigate({ to: "/home" });
+    try {
+      const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+      if (res.error) { toast.error(friendlyAuthError(res.error.message) || "Google sign-in failed"); return; }
+      if (res.redirected) return;
+      navigate({ to: "/home", replace: true });
+    } catch (err) {
+      toast.error(friendlyAuthError((err as Error).message));
+    }
   };
 
   const resetPassword = async () => {
-    if (!email) { toast.error("Enter your email above first"); return; }
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/login`,
+    const emailCheck = validateEmail(email);
+    if (!emailCheck.ok) { toast.error("Enter your email above first"); return; }
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
     });
-    if (error) toast.error(error.message);
+    if (error) toast.error(friendlyAuthError(error.message));
     else toast.success("Reset link sent — check your inbox");
   };
+
 
   return (
     <MobileShell withHero className="pb-10 pt-6">
