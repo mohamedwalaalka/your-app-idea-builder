@@ -8,8 +8,10 @@ const PUBLIC_PATHS = new Set([
   "/onboarding",
   "/login",
   "/signup",
+  "/reset-password",
   "/sms-permission",
 ]);
+
 
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);

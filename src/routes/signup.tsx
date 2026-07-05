@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,8 @@ import { RaadLogo } from "@/components/raad-logo";
 import { MobileShell } from "@/components/mobile-shell";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { friendlyAuthError, validateEmail, validatePassword } from "@/lib/password";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -25,34 +27,50 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { session, ready } = useAuth();
+
+  useEffect(() => {
+    if (ready && session) navigate({ to: "/home", replace: true });
+  }, [ready, session, navigate]);
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
-    if (!email || password.length < 8) {
-      toast.error("Enter your email and a password of at least 8 characters.");
-      return;
-    }
+    const emailCheck = validateEmail(email);
+    if (!emailCheck.ok) return toast.error(emailCheck.message!);
+    const pwCheck = validatePassword(password);
+    if (!pwCheck.ok) return toast.error(pwCheck.message!);
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email, password,
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(), password,
       options: {
         emailRedirectTo: `${window.location.origin}/home`,
-        data: { display_name: name || email.split("@")[0] },
+        data: { display_name: name.trim() || email.split("@")[0] },
       },
     });
     setLoading(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyAuthError(error.message)); return; }
+    if (!data.session) {
+      // Email confirmation required
+      toast.success("Check your inbox to confirm your email.");
+      navigate({ to: "/login" });
+      return;
+    }
     toast.success("Account created — welcome to Raad!");
-    navigate({ to: "/sms-permission" });
+    navigate({ to: "/sms-permission", replace: true });
   };
 
   const signUpWithGoogle = async () => {
-    const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (res.error) { toast.error(res.error.message || "Google sign-in failed"); return; }
-    if (res.redirected) return;
-    navigate({ to: "/sms-permission" });
+    try {
+      const res = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+      if (res.error) { toast.error(friendlyAuthError(res.error.message) || "Google sign-in failed"); return; }
+      if (res.redirected) return;
+      navigate({ to: "/home", replace: true });
+    } catch (err) {
+      toast.error(friendlyAuthError((err as Error).message));
+    }
   };
+
 
   return (
     <MobileShell withHero className="pb-10 pt-6">
@@ -74,7 +92,7 @@ function Signup() {
         <Field
           id="password" label="Password"
           type={showPassword ? "text" : "password"}
-          placeholder="At least 8 characters"
+          placeholder="8+ chars, upper, lower, number, symbol"
           icon={<Lock className="h-4 w-4" />}
           value={password} onChange={setPassword}
           autoComplete="new-password"
