@@ -95,6 +95,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Raad — Smart Personal Finance for Somalia" },
+      { name: "description", content: "Raad automatically tracks your mobile money income and expenses by reading transaction SMS. Beautiful, private, effortless personal finance." },
+      { property: "og:description", content: "Raad automatically tracks your mobile money income and expenses by reading transaction SMS. Beautiful, private, effortless personal finance." },
+      { name: "twitter:description", content: "Raad automatically tracks your mobile money income and expenses by reading transaction SMS. Beautiful, private, effortless personal finance." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a0efe622-fe55-4c1e-ac4e-d333b0ab9d39" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a0efe622-fe55-4c1e-ac4e-d333b0ab9d39" },
     ],
     links: [
       {
