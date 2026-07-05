@@ -92,7 +92,7 @@ function Signup() {
         <Field
           id="password" label="Password"
           type={showPassword ? "text" : "password"}
-          placeholder="At least 8 characters"
+          placeholder="8+ chars, upper, lower, number, symbol"
           icon={<Lock className="h-4 w-4" />}
           value={password} onChange={setPassword}
           autoComplete="new-password"
