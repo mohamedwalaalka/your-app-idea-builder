@@ -6,12 +6,14 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 import { MobileShell } from "@/components/mobile-shell";
 import { BottomNav } from "@/components/bottom-nav";
 import { useAuth, useRequireAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/hooks/use-theme";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
+
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
