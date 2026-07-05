@@ -30,6 +30,7 @@ function SettingsPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { isDark, toggle: toggleDark } = useTheme();
+  const queryClient = useQueryClient();
 
   const [notifications, setNotifications] = useState(true);
   useEffect(() => {
@@ -43,10 +44,14 @@ function SettingsPage() {
   };
 
   const handleLogout = async () => {
+    // Sign-out hygiene: cancel in-flight, clear cache, sign out, then navigate.
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
     toast.success("Signed out");
-    navigate({ to: "/login" });
+    navigate({ to: "/login", replace: true });
   };
+
 
   const displayName =
     (user?.user_metadata as any)?.display_name || user?.email?.split("@")[0] || "You";
