@@ -13,9 +13,15 @@ import {
 export const Route = createFileRoute("/analytics")({
   head: () => ({
     meta: [
-      { title: "Analytics — Raad" },
+      { title: "Analytics — Raad Income Tracker" },
       { name: "description", content: "Understand where your money goes with clear charts and category breakdowns." },
+      { property: "og:title", content: "Analytics — Raad Income Tracker" },
+      { property: "og:description", content: "Understand where your money goes with clear charts and category breakdowns." },
+      { property: "og:url", content: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/analytics" },
+      { name: "twitter:title", content: "Analytics — Raad Income Tracker" },
+      { name: "twitter:description", content: "Understand where your money goes with clear charts and category breakdowns." },
     ],
+    links: [{ rel: "canonical", href: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/analytics" }],
   }),
   component: AnalyticsPage,
 });

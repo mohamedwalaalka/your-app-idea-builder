@@ -18,9 +18,15 @@ import { Switch } from "@/components/ui/switch";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Raad" },
+      { title: "Settings — Raad Income Tracker" },
       { name: "description", content: "Manage your Raad profile, SMS permissions, security, and preferences." },
+      { property: "og:title", content: "Settings — Raad Income Tracker" },
+      { property: "og:description", content: "Manage your Raad profile, SMS permissions, security, and preferences." },
+      { property: "og:url", content: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/settings" },
+      { name: "twitter:title", content: "Settings — Raad Income Tracker" },
+      { name: "twitter:description", content: "Manage your Raad profile, SMS permissions, security, and preferences." },
     ],
+    links: [{ rel: "canonical", href: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/settings" }],
   }),
   component: SettingsPage,
 });

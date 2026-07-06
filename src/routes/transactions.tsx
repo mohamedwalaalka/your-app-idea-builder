@@ -11,9 +11,15 @@ import { TxnFormDialog } from "@/components/txn-form-dialog";
 export const Route = createFileRoute("/transactions")({
   head: () => ({
     meta: [
-      { title: "Transactions — Raad" },
+      { title: "Transactions — Raad Income Tracker" },
       { name: "description", content: "Browse every mobile money transaction Raad detected from your SMS inbox." },
+      { property: "og:title", content: "Transactions — Raad Income Tracker" },
+      { property: "og:description", content: "Browse every mobile money transaction Raad detected from your SMS inbox." },
+      { property: "og:url", content: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/transactions" },
+      { name: "twitter:title", content: "Transactions — Raad Income Tracker" },
+      { name: "twitter:description", content: "Browse every mobile money transaction Raad detected from your SMS inbox." },
     ],
+    links: [{ rel: "canonical", href: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/transactions" }],
   }),
   component: TransactionsPage,
 });
