@@ -117,13 +117,81 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
       },
     ],
-
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Raad Income Tracker",
+          url: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/",
+          applicationCategory: "FinanceApplication",
+          operatingSystem: "All",
+          description:
+            "Raad automatically parses mobile money SMS notifications to track income and expenses. Completely private, WhatsApp-style interface.",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
+
+function CrawlerContent() {
+  // Visually hidden but crawler-visible content block for SEO.
+  return (
+    <div
+      style={{
+        position: "absolute",
+        width: "1px",
+        height: "1px",
+        overflow: "hidden",
+        clip: "rect(0,0,0,0)",
+        clipPath: "inset(50%)",
+        whiteSpace: "nowrap",
+        border: 0,
+        padding: 0,
+        margin: -1,
+      }}
+    >
+      <h1>Raad — Income Tracker</h1>
+      <p>
+        Raad is a smart personal finance app that parses financial incoming
+        notifications to automatically track your mobile money income and
+        expenses. Completely private. WhatsApp interface style.
+      </p>
+      <h2>Features</h2>
+      <ul>
+        <li>Parses financial incoming notifications</li>
+        <li>Completely private — your data stays on your device and account</li>
+        <li>WhatsApp interface style, calm and familiar</li>
+        <li>Automatic income and expense categorization</li>
+        <li>Beautiful analytics and monthly summaries</li>
+      </ul>
+      <h2>Explore Raad</h2>
+      <nav aria-label="Sitemap">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/home">Dashboard</a></li>
+          <li><a href="/transactions">Transactions</a></li>
+          <li><a href="/analytics">Analytics</a></li>
+          <li><a href="/settings">Settings</a></li>
+          <li><a href="/onboarding">Get started</a></li>
+          <li><a href="/login">Log in</a></li>
+          <li><a href="/signup">Create account</a></li>
+        </ul>
+      </nav>
+      <h3>About Raad</h3>
+      <p>
+        Built for Somalia's mobile money users on EVC Plus, Zaad, and Sahal,
+        Raad turns transaction SMS into a clear picture of your finances.
+      </p>
+    </div>
+  );
+}
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
@@ -132,12 +200,14 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <CrawlerContent />
         {children}
         <Scripts />
       </body>
     </html>
   );
 }
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
