@@ -14,9 +14,15 @@ import { TxnFormDialog } from "@/components/txn-form-dialog";
 export const Route = createFileRoute("/home")({
   head: () => ({
     meta: [
-      { title: "Your money at a glance — Raad" },
+      { title: "Dashboard — Raad Income Tracker" },
       { name: "description", content: "See your current balance, mobile money income, and expenses in one calm dashboard." },
+      { property: "og:title", content: "Dashboard — Raad Income Tracker" },
+      { property: "og:description", content: "See your current balance, mobile money income, and expenses in one calm dashboard." },
+      { property: "og:url", content: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/home" },
+      { name: "twitter:title", content: "Dashboard — Raad Income Tracker" },
+      { name: "twitter:description", content: "See your current balance, mobile money income, and expenses in one calm dashboard." },
     ],
+    links: [{ rel: "canonical", href: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/home" }],
   }),
   component: Home,
 });

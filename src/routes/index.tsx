@@ -4,6 +4,18 @@ import { RaadLogo } from "@/components/raad-logo";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Raad Income Tracker — Private mobile money finance" },
+      { name: "description", content: "Raad parses financial incoming notifications to track income and expenses automatically. Completely private, WhatsApp interface style." },
+      { property: "og:title", content: "Raad Income Tracker — Private mobile money finance" },
+      { property: "og:description", content: "Raad parses financial incoming notifications to track income and expenses automatically. Completely private, WhatsApp interface style." },
+      { property: "og:url", content: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/" },
+      { name: "twitter:title", content: "Raad Income Tracker" },
+      { name: "twitter:description", content: "Private, automatic mobile money tracking with a WhatsApp-style interface." },
+    ],
+    links: [{ rel: "canonical", href: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/" }],
+  }),
   component: SplashScreen,
 });
 
