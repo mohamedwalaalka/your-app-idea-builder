@@ -100,6 +100,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Raad automatically tracks your mobile money income and expenses by reading transaction SMS. Beautiful, private, effortless personal finance." },
       { name: "twitter:description", content: "Raad automatically tracks your mobile money income and expenses by reading transaction SMS. Beautiful, private, effortless personal finance." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a0efe622-fe55-4c1e-ac4e-d333b0ab9d39" },
+      { property: "og:site_name", content: "Raad" },
+      { property: "og:url", content: "https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a0efe622-fe55-4c1e-ac4e-d333b0ab9d39" },
     ],
     links: [

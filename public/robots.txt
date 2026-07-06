@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://test-site-38dju7y6dhj7feyh7dhe.lovable.app/sitemap.xml
